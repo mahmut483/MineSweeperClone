@@ -4,6 +4,7 @@ public struct Cell
 {
     public enum Type // her bir karonun alabileceği değerler.
     {
+        Invalid,
         Empty,
         Mine,
         Number,

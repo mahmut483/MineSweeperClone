@@ -1,5 +1,5 @@
-
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Game : MonoBehaviour
 {
@@ -126,5 +126,48 @@ public class Game : MonoBehaviour
         }
 
         return count;
+    }
+
+    private void Update()
+    {
+        if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            Flag();
+        }
+    }
+
+    private void Flag()
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
+
+        Vector3Int cellPosition = board.tilemap.WorldToCell(worldPosition);
+        Cell cell = GetCell(cellPosition.x, cellPosition.y);
+
+        if (cell.type == Cell.Type.Invalid || cell.revealed)
+        {
+            return;
+        }
+
+        cell.flagged = !cell.flagged;
+        state[cellPosition.x, cellPosition.y] = cell;
+        board.Draw(state);
+    }
+
+    private Cell GetCell(int x, int y)
+    {
+        if (isValid(x, y))
+        {
+            return state[x, y];
+        }
+        else
+        {
+            return new Cell();
+        }
+    }
+
+    private bool isValid(int x, int y)
+    {
+        return x >= 0 && x < width && y >= 0 && y < heigth;
     }
 }
