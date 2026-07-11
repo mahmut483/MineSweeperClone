@@ -25,6 +25,7 @@ public class Game : MonoBehaviour
 
         GenerateCells();
         GenerateMines();
+        GenerateNumbers();
 
         Camera.main.transform.position = new Vector3(width / 2f, heigth / 2f, -10f);
         board.Draw(state);
@@ -68,7 +69,62 @@ public class Game : MonoBehaviour
             }
 
             state[x, y].type = Cell.Type.Mine;
-            state[x, y].revealed = true; // Mayınların oluştuğunu görsel olarak görebilmemiz için
         }
+    }
+
+    private void GenerateNumbers()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < heigth; y++)
+            {
+                Cell cell = state[x, y];
+
+                if (cell.type == Cell.Type.Mine)
+                {
+                    continue;
+                }
+
+                cell.number = CoutnMines(x, y);
+
+                if (cell.number > 0)
+                {
+                    cell.type = Cell.Type.Number;
+                }
+
+                state[x, y] = cell;
+            }
+        }
+    }
+
+    private int CoutnMines(int cellX, int cellY)
+    {
+        int count = 0;
+
+        for (int adjacentX = -1; adjacentX <= 1; adjacentX++)
+        {
+            for (int adjacentY = -1; adjacentY <= 1; adjacentY++)
+            {
+                if (adjacentX == 0 && adjacentY == 0)
+                {
+                    continue;
+                }
+
+                int x = cellX + adjacentX;
+                int y = cellY + adjacentY;
+
+                if (x < 0 || x >= width || y < 0 || y >= heigth)
+                {
+                    continue;
+                }
+
+                if (state[x, y].type == Cell.Type.Mine)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 }
