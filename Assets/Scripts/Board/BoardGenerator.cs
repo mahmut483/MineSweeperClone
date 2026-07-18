@@ -35,6 +35,9 @@ namespace MineSweeperClone.Board
         /// </summary>
         public static void GenerateMines(GridData grid, int mineCount)
         {
+            // Olası bir sonsuz döngüyü engellemek için mayın sayısını güvenli sınıra çekiyoruz
+            mineCount = Mathf.Min(mineCount, grid.Width * grid.Height);
+
             for (int i = 0; i < mineCount; i++)
             {
                 int x = Random.Range(0, grid.Width);

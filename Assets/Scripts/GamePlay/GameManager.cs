@@ -40,6 +40,11 @@ namespace MineSweeperClone.GamePlay
 
         private void Start()
         {
+            // Performans optimizasyonu: FPS'i 60'a sabitle ve VSync'i aç
+            // Bu sayede oyun saniyede binlerce kare çizmeye çalışıp bilgisayarı ısıtmaz
+            QualitySettings.vSyncCount = 1;
+            Application.targetFrameRate = 60;
+
             mainCamera = Camera.main;
             NewGame();
         }
