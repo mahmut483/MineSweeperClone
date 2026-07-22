@@ -1,4 +1,5 @@
 using MineSweeperClone.Core;
+using UnityEngine;
 
 namespace MineSweeperClone.GamePlay
 {
@@ -56,6 +57,7 @@ namespace MineSweeperClone.GamePlay
         /// </summary>
         public void Explode(GridData grid, int x, int y)
         {
+            Debug.Log("Kaybettin!!");
             CellData cell = grid.GetCell(x, y);
             cell.Revealed = true;
             cell.Exploded = true;
