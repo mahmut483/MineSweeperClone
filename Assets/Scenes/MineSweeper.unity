@@ -174,11 +174,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 381703795}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caf9f282d554f44fab2470b98bc98c24, type: 3}
+  m_Script: {fileID: 11500000, guid: 09a54e6c3fab1490f925ad35696ce103, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game
-  width: 3
-  heigth: 3
+  m_EditorClassIdentifier: Assembly-CSharp::MineSweeperClone.GamePlay.GameManager
+  width: 16
+  height: 16
+  mineCount: 30
 --- !u!1 &459417324
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +191,7 @@ GameObject:
   - component: {fileID: 459417325}
   - component: {fileID: 459417328}
   - component: {fileID: 459417327}
-  - component: {fileID: 459417326}
+  - component: {fileID: 459417329}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -213,31 +214,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 381703797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &459417326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 459417324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3093cbd5233f4c0a9f46c3d742ecb85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Board
-  tileUnknow: {fileID: 11400000, guid: 58927ea8ffd634570836a5c4974b6d2a, type: 2}
-  tileEmpty: {fileID: 11400000, guid: ee78e6bf8b2aa4ff08fa92306518f27e, type: 2}
-  tileMine: {fileID: 11400000, guid: ab3592f4ab73646aabbd0c9dd2938dfb, type: 2}
-  tileExploded: {fileID: 11400000, guid: 81d3edb23fad340c380f053eb75365e8, type: 2}
-  tileFlag: {fileID: 11400000, guid: 943dfd67ed6a04fd192aa10b2ebce133, type: 2}
-  tileNum1: {fileID: 11400000, guid: 6606992ca3d3f4357b2ab5953fa9fcda, type: 2}
-  tileNum2: {fileID: 11400000, guid: 82af1e10f8884423aa34840391db9d78, type: 2}
-  tileNum3: {fileID: 11400000, guid: 14ee16c4d6778434f9e7e461e7e4d1fd, type: 2}
-  tileNum4: {fileID: 11400000, guid: 18c8ec41b3f244d679c3cf0400d122da, type: 2}
-  tileNum5: {fileID: 11400000, guid: e2dc9ba91478b4b9b929e3d8fa95c6b6, type: 2}
-  tileNum6: {fileID: 11400000, guid: 229403cde10844d7cad78f03ef6566a8, type: 2}
-  tileNum7: {fileID: 11400000, guid: ed021ebc5a9ca4ff8b8330a923d43f25, type: 2}
-  tileNum8: {fileID: 11400000, guid: ecae0bd36d56641cc8732e4e7034aa3b, type: 2}
 --- !u!483693784 &459417327
 TilemapRenderer:
   serializedVersion: 2
@@ -332,6 +308,32 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &459417329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459417324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b300cf4bd9953494c8b09f8e75891763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MineSweeperClone.Board.BoardRenderer
+  tileUnknown: {fileID: 11400000, guid: 58927ea8ffd634570836a5c4974b6d2a, type: 2}
+  tileMine: {fileID: 11400000, guid: ab3592f4ab73646aabbd0c9dd2938dfb, type: 2}
+  tileEmpty: {fileID: 11400000, guid: ee78e6bf8b2aa4ff08fa92306518f27e, type: 2}
+  tileExploded: {fileID: 11400000, guid: 81d3edb23fad340c380f053eb75365e8, type: 2}
+  tileFlag: {fileID: 11400000, guid: 943dfd67ed6a04fd192aa10b2ebce133, type: 2}
+  tileNumbers:
+  - {fileID: 11400000, guid: 6606992ca3d3f4357b2ab5953fa9fcda, type: 2}
+  - {fileID: 11400000, guid: 82af1e10f8884423aa34840391db9d78, type: 2}
+  - {fileID: 11400000, guid: 14ee16c4d6778434f9e7e461e7e4d1fd, type: 2}
+  - {fileID: 11400000, guid: 18c8ec41b3f244d679c3cf0400d122da, type: 2}
+  - {fileID: 11400000, guid: e2dc9ba91478b4b9b929e3d8fa95c6b6, type: 2}
+  - {fileID: 11400000, guid: 229403cde10844d7cad78f03ef6566a8, type: 2}
+  - {fileID: 11400000, guid: ed021ebc5a9ca4ff8b8330a923d43f25, type: 2}
+  - {fileID: 11400000, guid: ecae0bd36d56641cc8732e4e7034aa3b, type: 2}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
