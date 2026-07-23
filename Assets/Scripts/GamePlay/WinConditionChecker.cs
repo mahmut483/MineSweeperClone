@@ -1,3 +1,4 @@
+
 using MineSweeperClone.Core;
 using UnityEngine;
 namespace MineSweeperClone.GamePlay
@@ -26,8 +27,6 @@ namespace MineSweeperClone.GamePlay
                     }
                 }
             }
-
-            Debug.Log("Kazandınız!!");
 
             return true;
         }

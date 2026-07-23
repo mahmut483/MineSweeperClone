@@ -12,6 +12,7 @@ namespace MineSweeperClone.GamePlay
         /// <summary>
         /// Tek bir hücreyi açık olarak işaretler.
         /// </summary>
+        
         public void RevealCell(GridData grid, int x, int y)
         {
             CellData cell = grid.GetCell(x, y);

@@ -3,6 +3,7 @@ using MineSweeperClone.Board;
 using MineSweeperClone.Core;
 using MineSweeperClone.Events;
 using MineSweeperClone.Input;
+using TMPro;
 
 namespace MineSweeperClone.GamePlay
 {
@@ -16,7 +17,21 @@ namespace MineSweeperClone.GamePlay
         [Header("Board Ayarları")]
         [SerializeField] private int width = 16;
         [SerializeField] private int height = 16;
-        [SerializeField] private int mineCount = 30;
+        [SerializeField] private TMP_Text levelTxt;
+        [SerializeField] private TMP_Text minesCountTxt;
+        [SerializeField] private TMP_Text levelPanelTitle;
+        [SerializeField] private TMP_Text levelPanelLabel;
+        [SerializeField] private GameObject levelPanel;
+        [SerializeField] private TMP_Text panelButtonTMP;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip revealingClip, explodingClip, floodingClip, flagingClip;
+        
+        private int mineCount;
+        private int firstLevelMineCount = 10;
+        private int midLevelMineCount = 20;
+        private int lastLevelMineCount = 30;
+        
+        public int level = 1;
 
         private const float CameraDepth = -10f;
 
@@ -27,15 +42,11 @@ namespace MineSweeperClone.GamePlay
         private CellRevealer cellRevealer;
         private bool isGameOver;
 
-        private void OnValidate()
-        {
-            mineCount = Mathf.Clamp(mineCount, 0, width * height);
-        }
-
         private void Awake()
         {
             boardRenderer = GetComponentInChildren<BoardRenderer>();
             cellRevealer = new CellRevealer();
+            mineCount = firstLevelMineCount;
         }
 
         private void Start()
@@ -57,7 +68,7 @@ namespace MineSweeperClone.GamePlay
         /// <summary>
         /// Yeni bir oyun başlatır. Board üretimi, kamera konumu ve çizimi koordine eder.
         /// </summary>
-        private void NewGame()
+        public void NewGame()
         {
             grid = new GridData(width, height);
             isGameOver = false;
@@ -73,15 +84,21 @@ namespace MineSweeperClone.GamePlay
             boardRenderer.Draw(grid.GetAllCells());
 
             GameEvents.RaiseGameStarted();
+
+            levelPanel.SetActive(false);
+
+            levelTxt.text = "Level: " + level.ToString();
+            minesCountTxt.text = "Mines: " + mineCount.ToString();
+            Debug.Log("NewGame çalıştı, level: " + level.ToString());
         }
 
         private void Update()
         {
-            if (inputHandler.IsRestartPressed)
-            {
-                NewGame();
-                return;
-            }
+            // if (inputHandler.IsRestartPressed)
+            // {
+            //     NewGame();
+            //     return;
+            // }
 
             if (isGameOver)
             {
@@ -111,6 +128,9 @@ namespace MineSweeperClone.GamePlay
                 return;
             }
 
+            audioSource.clip = flagingClip;
+            audioSource.Play();
+
             cell.Flagged = !cell.Flagged;
             grid.SetCell(cellPosition.x, cellPosition.y, cell);
             boardRenderer.Draw(grid.GetAllCells());
@@ -136,15 +156,27 @@ namespace MineSweeperClone.GamePlay
                     cellRevealer.Explode(grid, cellPosition.x, cellPosition.y);
                     isGameOver = true;
                     GameEvents.RaiseGameOver();
+                    level = 1;
+                    mineCount = firstLevelMineCount;
+                    levelPanelTitle.text = "You failled";
+                    levelPanelLabel.text = "Good luck next time!";
+                    panelButtonTMP.text = "RESTART";
+                    levelPanel.SetActive(true);
+                    audioSource.clip = explodingClip;
+                    audioSource.Play();
                     break;
 
                 case CellType.Empty:
                     cellRevealer.Flood(grid, cellPosition.x, cellPosition.y);
+                    audioSource.clip = floodingClip;
+                    audioSource.Play();
                     CheckWinCondition();
                     break;
 
                 default:
                     cellRevealer.RevealCell(grid, cellPosition.x, cellPosition.y);
+                    audioSource.clip = revealingClip;
+                    audioSource.Play();
                     CheckWinCondition();
                     break;
             }
@@ -163,6 +195,35 @@ namespace MineSweeperClone.GamePlay
                 isGameOver = true;
                 WinConditionChecker.FlagAllMines(grid);
                 GameEvents.RaiseGameWon();
+
+                levelPanel.SetActive(true);
+
+                levelPanelTitle.text = "You win!";
+                levelPanelLabel.text = "Your looking good";
+                panelButtonTMP.text = "NEXT";
+
+                level += 1;
+                if (level == 1)
+                {
+                    mineCount = firstLevelMineCount;
+                }else if (level == 2)
+                {
+                   mineCount = midLevelMineCount; 
+                }else if (level == 3)
+                {
+                    mineCount = lastLevelMineCount;
+                }
+                else
+                {
+                    levelPanelTitle.text = "You are amazing";
+                    levelPanelLabel.text = "Try again for a better result";
+                    panelButtonTMP.text = "TRY AGAİN";
+
+                    level = 1;
+                    mineCount = firstLevelMineCount;
+                }
+                Debug.Log("CheckWinCondition level:" + level.ToString());
+
             }
         }
     }
